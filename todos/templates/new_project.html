@@ -1,0 +1,14 @@
+{% extends "master.html" %}
+
+{% block title %}
+New Project
+{% endblock title %}
+
+{% block content %}
+<h1>New Project</h1>
+<form action="/projects/new" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" name="Submit">
+</form>
+{% endblock content %}

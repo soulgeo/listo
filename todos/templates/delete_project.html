@@ -1,0 +1,15 @@
+{% extends "master.html" %}
+
+{% block title %}
+Delete project: {{project.name}}
+{% endblock title %}
+
+{% block content %}
+<h1>Delete project: {{project.name}}</h1>
+<p>Are you sure?</p>
+<form action="/projects/{{project.id}}/delete/" method="post">
+    {% csrf_token %}
+    {{form}}
+    <input type="submit" name="Submit" value="Yes">
+</form>
+{% endblock content %}
