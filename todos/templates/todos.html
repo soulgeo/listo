@@ -1,0 +1,16 @@
+{% extends "master.html" %}
+
+{% block title %}
+{{project.name}}
+{% endblock title %}
+
+{% block content %}
+<h1>{{project.name}}</h1>
+<p>{{project.description}}</p>
+<ul>
+    {% for todo in todos %}
+    <li>{{todo.name}}</li>
+    {% endfor %}
+</ul>
+<p><a href="/projects">BACK</a></p>
+{% endblock content %}

@@ -1,4 +1,4 @@
-"""
+"""urls
 URL configuration for listo project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -20,5 +20,5 @@ from django.urls import include, path
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("projects/", include("todos.urls")),
+    path("", include("todos.urls")),
 ]
