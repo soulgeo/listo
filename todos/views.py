@@ -1,7 +1,7 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 
-from .forms import ProjectDeleteForm, ProjectForm
+from .forms import ProjectDeleteForm, ProjectForm, TodoForm
 from .models import Project, Todo
 
 
@@ -13,12 +13,29 @@ def projects(request):
 
 
 def todos(request, id):
-    template = loader.get_template("todos.html")
     project = Project.objects.get(id=id)
+    if request.method == "POST":
+        form = TodoForm(request.POST)
+        if "add" in request.POST and form.is_valid():
+            todo = Todo(name=form.cleaned_data["name"], project=project)
+            todo.save()
+        elif "update" in request.POST:
+            todo_id = request.POST.get("update")
+            todo = Todo.objects.get(id=todo_id)
+            todo.is_complete = not todo.is_complete
+            todo.save()
+        elif "delete" in request.POST:
+            todo_id = request.POST.get("delete")
+            todo = Todo.objects.get(id=todo_id)
+            todo.delete()
+
+    template = loader.get_template("todos.html")
+    form = TodoForm()
     todos = Todo.objects.filter(project=project)
     context = {
         "project": project,
         "todos": todos,
+        "form": form,
     }
     return HttpResponse(template.render(context, request))
 
@@ -27,7 +44,6 @@ def new_project(request):
     if request.method == "POST":
         form = ProjectForm(request.POST)
         if form.is_valid():
-            # Process data
             project = Project(
                 name=form.data["name"], description=form.data["description"]
             )

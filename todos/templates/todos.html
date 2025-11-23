@@ -7,10 +7,28 @@
 {% block content %}
 <h1>{{project.name}}</h1>
 <p>{{project.description}}</p>
-<ul>
-    {% for todo in todos %}
-    <li>{{todo.name}}</li>
-    {% endfor %}
+<form method="post" action="/projects/{{project.id}}">
+    {% csrf_token %}
+    <table>
+        <tr>
+            <td></td>
+            <td>{{ form.name }}</td>
+            <td><button type="submit" name="add">+</button></td>
+        </tr>
+        {% for todo in todos %}
+        <tr>
+            {% if todo.is_complete %}
+            <td><button formnovalidate type="submit" name="update" value="{{ todo.id }}">V</button></td>
+            <td><s>{{ todo.name }}</s></td>
+            {% else %}
+            <td><button formnovalidate type="submit" name="update" value="{{ todo.id }}">_</button></td>
+            <td>{{ todo.name }}</td>
+            {% endif %}
+            <td><button formnovalidate type="submit" name="delete" value="{{ todo.id }}">X</button></td>
+        </tr>
+        {% endfor %}
+    </table>
+</form>
 </ul>
-<p><a href="/projects">BACK</a> <a href="/projects/{{project.id}}/delete">DELETE PROJECT</a></p>
+<p><a href="/projects/">BACK</a> <a href="/projects/{{project.id}}/delete">DELETE PROJECT</a></p>
 {% endblock content %}

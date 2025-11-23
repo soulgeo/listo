@@ -8,3 +8,7 @@ class ProjectForm(forms.Form):
 
 class ProjectDeleteForm(forms.Form):
     hidden = forms.HiddenInput()
+
+
+class TodoForm(forms.Form):
+    name = forms.CharField(max_length=255)
