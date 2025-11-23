@@ -7,10 +7,17 @@ Projects
 {% block content %}
 <h1>Projects</h1>
 
-<ul>
+<table>
     {% for project in projects %}
-    <li><a href="{{project.id}}">{{project.name}}</a></li>
+    <tr>
+        <td><a href="{{project.id}}">{{project.name}}</a></td>
+        <td><a href="{{project.id}}">VIEW</a></td>
+        <td><a href="{{project.id}}/edit/">EDIT</a></td>
+        <td><a href="{{project.id}}/delete/">DELETE</a></td>
+    </tr>
     {% endfor %}
+    <tr></tr>
+</table>
 </ul>
 <p><a href="new">NEW PROJECT</a></p>
 {% endblock content %}

@@ -44,10 +44,7 @@ def new_project(request):
     if request.method == "POST":
         form = ProjectForm(request.POST)
         if form.is_valid():
-            project = Project(
-                name=form.data["name"], description=form.data["description"]
-            )
-            project.save()
+            form.save()
             return HttpResponseRedirect("/projects/")
 
     else:
@@ -56,6 +53,25 @@ def new_project(request):
     template = loader.get_template("new_project.html")
     context = {
         "form": form,
+    }
+    return HttpResponse(template.render(context, request))
+
+
+def edit_project(request, id):
+    project = Project.objects.get(id=id)
+    if request.method == "POST":
+        form = ProjectForm(request.POST, instance=project)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect("/projects/")
+
+    else:
+        form = ProjectForm(instance=project)
+
+    template = loader.get_template("edit_project.html")
+    context = {
+        "form": form,
+        "project": project,
     }
     return HttpResponse(template.render(context, request))
 

@@ -1,0 +1,14 @@
+{% extends "master.html" %}
+
+{% block title %}
+Edit Project
+{% endblock title %}
+
+{% block content %}
+<h1>Edit Project</h1>
+<form action="/projects/{{project.id}}/edit/" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" name="Submit">
+</form>
+{% endblock content %}

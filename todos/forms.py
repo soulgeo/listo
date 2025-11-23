@@ -1,9 +1,13 @@
 from django import forms
+from django.forms import ModelForm
+
+from .models import Project
 
 
-class ProjectForm(forms.Form):
-    name = forms.CharField(label="Name", max_length=255)
-    description = forms.CharField(label="Description")
+class ProjectForm(ModelForm):
+    class Meta:
+        model = Project
+        fields = ["name", "description"]
 
 
 class ProjectDeleteForm(forms.Form):
