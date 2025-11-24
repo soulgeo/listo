@@ -1,19 +1,21 @@
-from django.http import HttpResponse, HttpResponseRedirect
-from django.template import loader
+from django.contrib.auth.decorators import login_not_required
+from django.shortcuts import redirect, render
 
 from .forms import ProjectDeleteForm, ProjectForm, TodoForm
 from .models import Project, Todo
 
 
 def projects(request):
-    template = loader.get_template("projects.html")
-    projects = Project.objects.all().values()
+    projects = Project.objects.filter(user=request.user).values()
     context = {"projects": projects}
-    return HttpResponse(template.render(context, request))
+    return render(request, "projects.html", context)
 
 
 def todos(request, id):
     project = Project.objects.get(id=id)
+    if project.user != request.user:
+        return redirect("/projects")
+
     if request.method == "POST":
         form = TodoForm(request.POST)
         if "add" in request.POST and form.is_valid():
@@ -29,7 +31,6 @@ def todos(request, id):
             todo = Todo.objects.get(id=todo_id)
             todo.delete()
 
-    template = loader.get_template("todos.html")
     form = TodoForm()
     todos = Todo.objects.filter(project=project)
     context = {
@@ -37,62 +38,64 @@ def todos(request, id):
         "todos": todos,
         "form": form,
     }
-    return HttpResponse(template.render(context, request))
+    return render(request, "todos.html", context)
 
 
 def new_project(request):
     if request.method == "POST":
         form = ProjectForm(request.POST)
         if form.is_valid():
-            form.save()
-            return HttpResponseRedirect("/projects/")
-
+            instance = form.save(commit=False)
+            instance.user = request.user
+            instance.save()
+            return redirect("/projects/")
     else:
         form = ProjectForm()
 
-    template = loader.get_template("new_project.html")
     context = {
         "form": form,
     }
-    return HttpResponse(template.render(context, request))
+    return render(request, "new_project.html", context)
 
 
 def edit_project(request, id):
     project = Project.objects.get(id=id)
+    if project.user != request.user:
+        return redirect("/projects")
+
     if request.method == "POST":
         form = ProjectForm(request.POST, instance=project)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect("/projects/")
-
+            return redirect("/projects/")
     else:
         form = ProjectForm(instance=project)
 
-    template = loader.get_template("edit_project.html")
     context = {
         "form": form,
         "project": project,
     }
-    return HttpResponse(template.render(context, request))
+    return render(request, "edit_project.html", context)
 
 
 def delete_project(request, id):
     project = Project.objects.get(id=id)
+    if project.user != request.user:
+        return redirect("/projects")
+
     if request.method == "POST":
         project.delete()
-        return HttpResponseRedirect("/projects/")
-
+        return redirect("/projects/")
     else:
         form = ProjectDeleteForm()
 
-    template = loader.get_template("delete_project.html")
     context = {
         "form": form,
         "project": project,
     }
-    return HttpResponse(template.render(context, request))
+    return render(request, "delete_project.html", context)
 
 
+@login_not_required
 def home(request):
-    template = loader.get_template("index.html")
-    return HttpResponse(template.render({}, request))
+    return render(request, "index.html", {})

@@ -6,5 +6,11 @@ Home
 
 {% block content %}
 <h1>Welcome to Listo!</h1>
-<p><a href="/projects">VIEW PROJECTS</a></p>
+<p>
+    {% if user.is_authenticated %}
+    <a href="/projects">VIEW YOUR PROJECTS</a>
+    {% else %}
+    Log in or register to get started.
+    {% endif %}
+</p>
 {% endblock content %}
