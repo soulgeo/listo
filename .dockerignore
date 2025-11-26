@@ -2,10 +2,9 @@
 **/*.pyo
 **/*.mo
 .gitignore
-.git/
+.git
 **/__pycache__/
 Dockerfile
 db.sqlite3
 **/*.md
 .venv
-.git
