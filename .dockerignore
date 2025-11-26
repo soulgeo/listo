@@ -1,1 +1,11 @@
+**/*.pyc
+**/*.pyo
+**/*.mo
+.gitignore
+.git/
+**/__pycache__/
+Dockerfile
+db.sqlite3
+**/*.md
 .venv
+.git
