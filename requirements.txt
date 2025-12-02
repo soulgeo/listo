@@ -1,5 +1,7 @@
 asgiref==3.11.0
 Django==5.2.8
+djangorestframework
+environs
 django-stubs==5.2.7
 django-stubs-ext==5.2.7
 mypy_extensions==1.1.0
