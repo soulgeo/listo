@@ -15,8 +15,10 @@ class Project(models.Model):
 
 class Todo(models.Model):
     name = models.CharField(max_length=255)
-    project = models.ForeignKey(Project, on_delete=models.CASCADE)
-    description = models.TextField(default="")
+    project = models.ForeignKey(
+        Project, on_delete=models.CASCADE, related_name='todos'
+    )
+    description = models.TextField(default='')
     is_complete = models.BooleanField(default=False)
     added_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
