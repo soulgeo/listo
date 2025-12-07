@@ -10,3 +10,4 @@ types-PyYAML==6.0.12.20250915
 typing_extensions==4.15.0
 python-dotenv
 psycopg[binary]
+django-silk
