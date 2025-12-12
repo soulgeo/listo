@@ -1,6 +1,5 @@
 from django.db.models import Max
 from django.shortcuts import get_object_or_404
-from django.urls import is_valid_path
 from rest_framework import status
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
