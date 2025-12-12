@@ -7,12 +7,15 @@ class TodoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Todo
         fields = (
+            'id',
             'name',
             'description',
+            'project',
             'is_complete',
             'added_at',
             'updated_at',
         )
+        read_only_fields = ('id', 'project', 'created_at', 'updated_at')
 
 
 class ProjectSerializer(serializers.ModelSerializer):
